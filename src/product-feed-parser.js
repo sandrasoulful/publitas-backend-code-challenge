@@ -1,4 +1,4 @@
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 const sax = require('sax');
 
 class ProductFeedParser extends Transform {
@@ -26,24 +26,22 @@ class ProductFeedParser extends Transform {
         });
 
         this.parser.on('closetag', name => {
-            if (
-                name === 'item' &&
-                this.product?.id &&
-                this.product?.title &&
-                this.product?.description
-            ) {
+            if (name === 'item') {
                 this.push(this.product);
-                console.log('product sent downstream:', this.product);
                 this.product = null;
             }
             this.currentTag = null;
         });
 
-        this.parser.on('error', err => this.destroy(err));
+        this.parser.on('error', err => {
+            console.error('XML Parsing Error. Stopping processing.', err);
+            this.destroy(err);
+        });
     }
 
     _transform(chunk, _, callback) {
         try {
+            console.log('!!! RAW CHUNK received in parser->', chunk.toString());
             this.parser.write(chunk.toString());
             callback();
         } catch (err) {

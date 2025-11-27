@@ -1,4 +1,4 @@
-const { Writable } = require('stream');
+const { Writable } = require('node:stream');
 const ExternalService = require('./external/external-service');
 
 const ONE_MB = 1_048_576;
@@ -21,18 +21,10 @@ class BatchSender extends Writable {
             const size = this._estimate(product);
             if (this.batchBytes + size >= MAX_BYTES) {
                 this._flush();
-                const productSize = this._estimate(product);
-                if (productSize >= MAX_BYTES) {
-                    console.warn(`Product exceeds batch size (<5MB). Adding as first item of next batch:`, product.id);
-                    this.batch.push(product);
-                    this.batchBytes = Buffer.byteLength(JSON.stringify(this.batch));
-                    return done();
-                }
             }
-
             this.batch.push(product);
             this.batchBytes = Buffer.byteLength(JSON.stringify(this.batch));
-            done();
+            return done();
         } catch (e) {
             done(e);
         }

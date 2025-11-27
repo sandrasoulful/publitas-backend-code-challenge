@@ -1,7 +1,7 @@
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 const he = require('he');
 
-class Normalizer extends Transform {
+class ProductNormalizer extends Transform {
     constructor() {
         super({ objectMode: true });
     }
@@ -19,4 +19,4 @@ class Normalizer extends Transform {
     }
 }
 
-module.exports = Normalizer;
+module.exports = ProductNormalizer;

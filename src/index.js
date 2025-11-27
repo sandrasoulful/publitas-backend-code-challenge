@@ -1,30 +1,24 @@
 const fs = require('fs');
-const { pipeline } = require('stream');
-const Normalizer = require('./normalizer');
+const { pipeline } = require('node:stream');
+const ProductNormalizer = require('./product-normalizer');
 const BatchSender = require('./batch-sender');
 const ProductFeedParser = require('./product-feed-parser');
+const ProductValidator = require('./product-validator');
 
-const filePath = process.argv[2];
-if (!filePath) {
-    console.error('Usage: node app.js <xml-file-path>');
+const productFeedFilePath = process.argv[2];
+if (!productFeedFilePath) {
+    console.error('Missing XML file path argument');
     process.exit(1);
 }
 
-const productFeedStream =  fs.createReadStream(filePath, 'utf8');
-const normalizer = new Normalizer();
-const batchSender = new BatchSender();
-const productFeedParser = new ProductFeedParser();
-
 pipeline(
-    productFeedStream,
-    productFeedParser,
-    normalizer,
-    batchSender,
+    fs.createReadStream(productFeedFilePath, 'utf8'),
+    new ProductFeedParser(),
+    new ProductValidator(),
+    new ProductNormalizer(),
+    new BatchSender(),
     (err) => {
         if (err) console.error('Pipeline failed:', err);
         else console.log('Pipeline finished successfully');
     }
 );
-
-
-
