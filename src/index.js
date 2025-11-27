@@ -1,9 +1,7 @@
 const fs = require('fs');
 const { pipeline } = require('node:stream');
-const ProductNormalizer = require('./product-normalizer');
-const BatchSender = require('./batch-sender');
-const ProductFeedParser = require('./product-feed-parser');
-const ProductValidator = require('./product-validator');
+const BatchSender = require('./lib/batch-sender');
+const ProductFeedParser = require('./lib/product-feed-parser');
 
 const productFeedFilePath = process.argv[2];
 if (!productFeedFilePath) {
@@ -14,8 +12,6 @@ if (!productFeedFilePath) {
 pipeline(
     fs.createReadStream(productFeedFilePath, 'utf8'),
     new ProductFeedParser(),
-    new ProductValidator(),
-    new ProductNormalizer(),
     new BatchSender(),
     (err) => {
         if (err) console.error('Pipeline failed:', err);

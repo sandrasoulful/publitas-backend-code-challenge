@@ -1,5 +1,8 @@
 const { Writable } = require('node:stream');
-const ExternalService = require('./external/external-service');
+const ExternalService = require('../external/external-service');
+const { isValidProduct } = require('../utils/product-validator');
+const { normalizeProduct } = require('../utils/product-normalizer');
+
 
 const ONE_MB = 1_048_576;
 const MAX_BYTES = ONE_MB * 5;
@@ -18,14 +21,21 @@ class BatchSender extends Writable {
 
     _write(product, _, done) {
         try {
-            const size = this._estimate(product);
+            if (!isValidProduct(product)) {
+                console.warn('Skipping invalid product:', product);
+                return done();
+            }
+            const normalizedProduct = normalizeProduct(product);
+            const size = this._estimate(normalizedProduct);
             if (this.batchBytes + size >= MAX_BYTES) {
+                console.log('Size limit reached, flushing current batch.');
                 this._flush();
             }
-            this.batch.push(product);
+            this.batch.push(normalizedProduct);
             this.batchBytes = Buffer.byteLength(JSON.stringify(this.batch));
             return done();
         } catch (e) {
+            console.error('Error processing a product for batch sending', e);
             done(e);
         }
     }

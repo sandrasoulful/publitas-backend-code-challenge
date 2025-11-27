@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { once } = require('node:events');
-const ProductFeedParser = require('../../src/product-feed-parser');
+const ProductFeedParser = require('../../src/lib/product-feed-parser');
 
 const singleProductXML = require.resolve('../fixtures/single-product-feed.xml');
 const multipleProductsXML = require.resolve('../fixtures/multiple-products-feed.xml');
@@ -10,14 +10,14 @@ const emptyProductFeedXML = require.resolve('../fixtures/empty-product-feed.xml'
 
 
 describe('Product Feed Parser', () => {
-    test('parses correctly when XML contains a single product (item)', async () => {
-        const parser = new ProductFeedParser();
+    it('should parse correctly when XML contains a single product (item)', async () => {
+        const parserStream = new ProductFeedParser();
         const products = [];
 
-        parser.on('data', (product) => products.push(product));
+        parserStream.on('data', (product) => products.push(product));
 
-        const stream = fs.createReadStream(singleProductXML, 'utf8').pipe(parser);
-        await once(stream, 'end');
+        fs.createReadStream(singleProductXML, 'utf8').pipe(parserStream);
+        await once(parserStream, 'end');
 
         expect(products.length).toBe(1);
 
@@ -30,14 +30,14 @@ describe('Product Feed Parser', () => {
         expect(products[0]).toEqual(expectedProduct);
     });
 
-    test('parses correctly when XML contains multiple products (items)', async () => {
-        const parser = new ProductFeedParser();
+    it('should parse correctly when XML contains multiple products (items)', async () => {
+        const parserStream = new ProductFeedParser();
         const products = [];
 
-        parser.on('data', (product) => products.push(product));
+        parserStream.on('data', (product) => products.push(product));
 
-        const stream = fs.createReadStream(multipleProductsXML, 'utf8').pipe(parser);
-        await once(stream, 'end');
+        fs.createReadStream(multipleProductsXML, 'utf8').pipe(parserStream);
+        await once(parserStream, 'end');
 
         expect(products.length).toBe(3);
 
@@ -60,7 +60,7 @@ describe('Product Feed Parser', () => {
         expect(products).toEqual(expectedProducts);
     });
 
-    test('stops processing if XML contains no products (items)', async () => {
+    it('should stop processing if XML contains no products (items)', async () => {
         const parser = new ProductFeedParser();
         const onData = jest.fn();
 
@@ -71,7 +71,7 @@ describe('Product Feed Parser', () => {
 
         expect(onData).not.toHaveBeenCalled();
     });
-    test('stops processing if XML is empty', async () => {
+    it('should stop processing if XML is empty', async () => {
         const parser = new ProductFeedParser();
         const onData = jest.fn();
 
@@ -83,7 +83,7 @@ describe('Product Feed Parser', () => {
         expect(onData).not.toHaveBeenCalled();
     });
 
-    test('should emit an error and stop processing if XML is invalid', async () => {
+    it('should emit an error and stop processing if XML is invalid', async () => {
         const parser = new ProductFeedParser();
         let caughtError = null;
 

@@ -1,3 +1,4 @@
+//Simulated external service that receives batches of products, keeping it in the code base for demonstration purposes.
 class ExternalService {
     constructor() {
         this.ONE_MEGA_BYTE = 1_048_576.0;
