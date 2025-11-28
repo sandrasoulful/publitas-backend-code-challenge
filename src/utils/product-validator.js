@@ -3,12 +3,15 @@ const isValidProduct = (product) => {
         console.error('Validation: product is missing');
         return false;
     }
-    if (!product.id || product.id === '') {
-        console.error('Validation: id is missing for product:', product);
+
+    const { id, title } = product;
+
+    if (!id || id === '') {
+        console.error(`Validation: id is missing for product '${title}'`);
         return false;
     }
-    if (!product.title || product.title === '') {
-        console.error(`Validation: title is missing for product #${product.id}`);
+    if (!title || title === '') {
+        console.error(`Validation: title is missing for product #${id}`);
         return false;
     }
     return true;

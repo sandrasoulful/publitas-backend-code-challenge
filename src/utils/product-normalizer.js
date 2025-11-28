@@ -1,6 +1,7 @@
 const clean = (text) => {
     if (!text) return '';
-    text = text.replace(/<[^>]+>/g, '');
+    const tagsRegex = /<[^>]+>/g;
+    text = text.replace(tagsRegex, '');
     return text.trim();
 };
 

@@ -1,4 +1,6 @@
-//Simulated external service that receives batches of products, keeping it in the code base for demonstration purposes.
+//NOTE (AK):
+// Simulated external service (rewritten from Ruby) that receives batches of products.
+// Keeping it in the code base for the task completion purposes.
 class ExternalService {
     constructor() {
         this.ONE_MEGA_BYTE = 1_048_576.0;
@@ -15,8 +17,6 @@ class ExternalService {
 
         console.log(`\x1b[1mReceived batch${String(this.batch_num).padStart(4)}\x1b[22m`);
         console.log(`Size: ${((Buffer.byteLength(batch) / this.ONE_MEGA_BYTE)).toFixed(2)}MB`);
-        // todo: remove
-        console.log("Exact batch size MB:", ((Buffer.byteLength(batch) / this.ONE_MEGA_BYTE)).toFixed(20));
         console.log(`Products: ${String(products.length).padStart(8)}`);
         console.log('\n');
     }

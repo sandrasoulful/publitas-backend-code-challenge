@@ -50,6 +50,12 @@ class BatchSender extends Writable {
     _flush() {
         if (!this.batch.length) return;
         const json = JSON.stringify(this.batch);
+
+        //NOTE (AK):
+        //logging the actual size as the external service rounds the batch size to 2 digits
+        //and prints out 5MB when in reality it is less
+        console.log('Exact batch size MB:', ((Buffer.byteLength(json) / ONE_MB)).toFixed(20));
+
         this.externalService.call(json);
         this.batch = [];
         this.batchBytes = EMPTY_ARRAY_BYTE_SIZE;

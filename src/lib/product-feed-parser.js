@@ -4,9 +4,7 @@ const sax = require('sax');
 class ProductFeedParser extends Transform {
     constructor() {
         super({ readableObjectMode: true });
-
         this.parser = sax.createStream(true);
-
         this.product = null;
         this.currentTag = null;
 

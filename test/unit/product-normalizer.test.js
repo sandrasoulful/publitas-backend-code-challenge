@@ -1,11 +1,7 @@
 const { normalizeProduct } = require('../../src/utils/product-normalizer');
+const { validProduct } = require('../fixtures/products');
 
-describe('normalizeProduct', () => {
-    const validProduct = {
-        id: '9454971',
-        title: 'Witte T-shirt met groene letters',
-        description: 'Deze donkerblauwe jeans met oranje stiksels van Angels is een echte klassieker'
-    };
+describe('Product Normalizer unit tests', () => {
 
     it('should throw an error when product is missing', () => {
         expect(() => normalizeProduct(undefined)).toThrow();

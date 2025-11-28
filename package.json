@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "node src/index.js",
-    "dev": "node src/index.js ./test/fixtures/product-feed.xml"
+    "dev": "node src/index.js test/fixtures/product-feed-files/product-feed.xml"
   },
   "repository": {
     "type": "git",

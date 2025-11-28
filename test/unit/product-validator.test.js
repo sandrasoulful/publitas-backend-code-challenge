@@ -1,11 +1,7 @@
 const { isValidProduct } = require('../../src/utils/product-validator');
+const { validProduct } = require('../fixtures/products');
 
-describe('isValidProduct', () => {
-    const validProduct = {
-        id: '9454971',
-        title: 'Witte T-shirt met groene letters',
-        description: 'Deze donkerblauwe jeans met oranje stiksels van Angels is een echte klassieker'
-    };
+describe('Product Validator unit tests', () => {
 
     it('should return true for a valid product', () => {
         expect(isValidProduct(validProduct)).toBe(true);
