@@ -1,18 +1,4 @@
-/*
-tese cases
-- if product has no id - product not passed down the stream, keep processing the rest
-- if product has no title - product not passed down the stream, keep processing the rest
-- if product has no id AND no title - product not passed down the stream, keep processing the rest
-- if product has no description element - description set to empty string
-- if product has empty description - description set to empty string
-- Description is multiple whitespace only -  description set to empty string
- */
-
-const fs = require('fs');
-const { once } = require('node:events');
-const { Readable } = require('node:stream');
 const { isValidProduct } = require('../../src/utils/product-validator');
-
 
 describe('isValidProduct', () => {
     const validProduct = {
@@ -55,6 +41,13 @@ describe('isValidProduct', () => {
         expect(isValidProduct(product)).toBe(false);
     });
 
+    it('should return false when product has no id and title', () => {
+        const product = {
+            description: validProduct.description
+        };
+        expect(isValidProduct(product)).toBe(false);
+    });
+
     it('should return false when title is an empty string', () => {
         const product = {
             id: validProduct.id,
@@ -64,10 +57,19 @@ describe('isValidProduct', () => {
         expect(isValidProduct(product)).toBe(false);
     });
 
-    it('should return true if description is missing', () => {
+    it('should return true when a product has no description', () => {
+        const product = {
+            id: validProduct.id,
+            title: validProduct.title
+        };
+        expect(isValidProduct(product)).toBe(true);
+    });
+
+    it('should return true when description is an empty string', () => {
         const product = {
             id: validProduct.id,
             title: validProduct.title,
+            description: ''
         };
         expect(isValidProduct(product)).toBe(true);
     });

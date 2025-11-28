@@ -5,7 +5,7 @@ const ProductFeedParser = require('./lib/product-feed-parser');
 
 const productFeedFilePath = process.argv[2];
 if (!productFeedFilePath) {
-    console.error('Missing XML file path argument');
+    console.error('Missing file path argument, please specify the path to the product feed XML file.');
     process.exit(1);
 }
 

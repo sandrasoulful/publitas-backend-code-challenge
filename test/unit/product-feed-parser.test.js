@@ -9,7 +9,7 @@ const invalidProductFeedXML = require.resolve('../fixtures/invalid-product-feed.
 const emptyProductFeedXML = require.resolve('../fixtures/empty-product-feed.xml');
 
 
-describe('Product Feed Parser', () => {
+describe('ProductFeedParser', () => {
     it('should parse correctly when XML contains a single product (item)', async () => {
         const parserStream = new ProductFeedParser();
         const products = [];

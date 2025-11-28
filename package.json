@@ -1,7 +1,7 @@
 {
   "name": "publitas-backend-code-challenge",
   "version": "1.0.0",
-  "description": "A small Node.js utility that reads a product feed in XML, extracts product fields, and batches them into JSON chunks below 5 MB before sending them to an external service. Includes unit tests for parsing and batching.",
+  "description": "A small Node.js utility that reads a product feed in XML, extracts product fields, and batches them into JSON chunks below 5 MB before sending them to an external service.",
   "main": "index.js",
   "scripts": {
     "test": "jest",

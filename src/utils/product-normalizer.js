@@ -5,7 +5,7 @@ const clean = (text) => {
 };
 
 const normalizeProduct = (product) => {
-    if (!product) throw new Error('Normalization: product is missing');
+    if (!product) throw new Error('Failed to normalize, product is missing');
 
     if (!product.description) {
         product.description = '';

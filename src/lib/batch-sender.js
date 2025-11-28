@@ -1,8 +1,7 @@
 const { Writable } = require('node:stream');
-const ExternalService = require('../external/external-service');
+const ExternalService = require('../service/external-service');
 const { isValidProduct } = require('../utils/product-validator');
 const { normalizeProduct } = require('../utils/product-normalizer');
-
 
 const ONE_MB = 1_048_576;
 const MAX_BYTES = ONE_MB * 5;
