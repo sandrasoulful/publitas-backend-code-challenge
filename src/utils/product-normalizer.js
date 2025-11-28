@@ -15,5 +15,4 @@ const normalizeProduct = (product) => {
     return product;
 };
 
-
 module.exports = { normalizeProduct };

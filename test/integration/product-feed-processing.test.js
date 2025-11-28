@@ -9,4 +9,5 @@
 - throws an error when the XML is malformed and does not call the External Service
 - excludes products without id or title and sends the rest of products to the External Service
 - if a product's description is missing, log a warning but include the product in the batch for the External Service
+-  should process multiple products and flush at limits
  */
