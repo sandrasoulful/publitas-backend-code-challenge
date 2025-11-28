@@ -41,7 +41,6 @@ class ProductFeedParser extends Transform {
 
     _transform(chunk, _, callback) {
         try {
-            console.log('!!! RAW CHUNK received in parser->', chunk.toString());
             this.parser.write(chunk.toString());
             callback();
         } catch (err) {

@@ -8,7 +8,7 @@ const isValidProduct = (product) => {
         return false;
     }
     if (!product.title || product.title === '') {
-        console.error('Validation: title is missing for product:', product);
+        console.error(`Validation: title is missing for product #${product.id}`);
         return false;
     }
     return true;

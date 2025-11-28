@@ -15,6 +15,8 @@ class ExternalService {
 
         console.log(`\x1b[1mReceived batch${String(this.batch_num).padStart(4)}\x1b[22m`);
         console.log(`Size: ${((Buffer.byteLength(batch) / this.ONE_MEGA_BYTE)).toFixed(2)}MB`);
+        // todo: remove
+        console.log("Exact batch size MB:", ((Buffer.byteLength(batch) / this.ONE_MEGA_BYTE)).toFixed(20));
         console.log(`Products: ${String(products.length).padStart(8)}`);
         console.log('\n');
     }

@@ -11,11 +11,11 @@ class BatchSender extends Writable {
         super({ objectMode: true });
         this.externalService = new ExternalService();
         this.batch = [];
-        this.batchBytes = 0;
+        this.batchBytes = 2; // [] = 2 bytes
     }
 
-    _estimate(product) {
-        return Buffer.byteLength(JSON.stringify([product]));
+    _measureProductBytes(product) {
+        return Buffer.byteLength(JSON.stringify(product));
     }
 
     _write(product, _, done) {
@@ -25,13 +25,14 @@ class BatchSender extends Writable {
                 return done();
             }
             const normalizedProduct = normalizeProduct(product);
-            const size = this._estimate(normalizedProduct);
-            if (this.batchBytes + size >= MAX_BYTES) {
+            const jsonBytes = this._measureProductBytes(normalizedProduct);
+            const overhead = this.batch.length === 0 ? 0 : 1;
+            if (this.batchBytes + overhead + jsonBytes >= MAX_BYTES) {
                 console.log('Size limit reached, flushing current batch.');
                 this._flush();
             }
             this.batch.push(normalizedProduct);
-            this.batchBytes = Buffer.byteLength(JSON.stringify(this.batch));
+            this.batchBytes += overhead + jsonBytes;
             return done();
         } catch (e) {
             console.error('Error processing a product for batch sending', e);
@@ -42,10 +43,9 @@ class BatchSender extends Writable {
     _flush() {
         if (!this.batch.length) return;
         const json = JSON.stringify(this.batch);
-        console.log('FLUSHING BATCH, calling external service with size:', (Buffer.byteLength(json) / ONE_MB).toFixed(2), 'MB');
         this.externalService.call(json);
         this.batch = [];
-        this.batchBytes = 0;
+        this.batchBytes = 2;
     }
 
     _final(done) {
